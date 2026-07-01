@@ -1,0 +1,368 @@
+mysql> CREATE DATABASE PetShopManagement;
+Query OK, 1 row affected (0.09 sec)
+
+mysql> USE PetShopManagement;
+Database changed
+mysql> CREATE TABLE Customers (
+    ->     customer_id INT PRIMARY KEY AUTO_INCREMENT,
+    ->     customer_name VARCHAR(100) NOT NULL,
+    ->     phone VARCHAR(15) UNIQUE,
+    ->     email VARCHAR(100) UNIQUE
+    -> );
+Query OK, 0 rows affected (0.19 sec)
+
+mysql> CREATE TABLE Pets (
+    ->     pet_id INT PRIMARY KEY AUTO_INCREMENT,
+    ->     pet_name VARCHAR(100) NOT NULL,
+    ->     pet_type VARCHAR(50),
+    ->     price DECIMAL(10,2)
+    -> );
+Query OK, 0 rows affected (0.08 sec)
+
+mysql> CREATE TABLE Purchases (
+    ->     purchase_id INT PRIMARY KEY AUTO_INCREMENT,
+    ->     purchase_date DATE,
+    ->     quantity INT,
+    ->     customer_id INT,
+    ->     pet_id INT,
+    ->     FOREIGN KEY (customer_id)
+    ->     REFERENCES Customers(customer_id),
+    ->     FOREIGN KEY (pet_id)
+    ->     REFERENCES Pets(pet_id)
+    -> );
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> INSERT INTO Customers
+    -> (customer_name, phone, email)
+    -> VALUES
+    -> ('Rahul Sharma','9876543210','rahul@gmail.com'),
+    -> ('Priya Reddy','9876543211','priya@gmail.com'),
+    -> ('Arjun Kumar','9876543212','arjun@gmail.com'),
+    -> ('Sneha Patel','9876543213','sneha@gmail.com'),
+    -> ('Vikram Singh','9876543214','vikram@gmail.com'),
+    -> ('Ananya Das','9876543215','ananya@gmail.com');
+Query OK, 6 rows affected (0.07 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO Pets
+    -> (pet_name, pet_type, price)
+    -> VALUES
+    -> ('Tommy','Dog',25000),
+    -> ('Kitty','Cat',15000),
+    -> ('Coco','Parrot',5000),
+    -> ('Bunny','Rabbit',3000),
+    -> ('Goldie','Fish',1000),
+    -> ('Snowy','Hamster',2000);
+Query OK, 6 rows affected (0.05 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO Purchases
+    -> (purchase_date, quantity, customer_id, pet_id)
+    -> VALUES
+    -> ('2026-06-20',1,1,1),
+    -> ('2026-06-21',2,2,3),
+    -> ('2026-06-21',1,3,2),
+    -> ('2026-06-22',3,4,5),
+    -> ('2026-06-23',1,5,4),
+    -> ('2026-06-23',2,6,6);
+Query OK, 6 rows affected (0.05 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+
+mysql> select * from customers;
++-------------+---------------+------------+------------------+
+| customer_id | customer_name | phone      | email            |
++-------------+---------------+------------+------------------+
+|           1 | Rahul Sharma  | 9876543210 | rahul@gmail.com  |
+|           2 | Priya Reddy   | 9876543211 | priya@gmail.com  |
+|           3 | Arjun Kumar   | 9876543212 | arjun@gmail.com  |
+|           4 | Sneha Patel   | 9876543213 | sneha@gmail.com  |
+|           5 | Vikram Singh  | 9876543214 | vikram@gmail.com |
+|           6 | Ananya Das    | 9876543215 | ananya@gmail.com |
++-------------+---------------+------------+------------------+
+6 rows in set (0.06 sec)
+
+mysql> select * from pets;
++--------+----------+----------+----------+
+| pet_id | pet_name | pet_type | price    |
++--------+----------+----------+----------+
+|      1 | Tommy    | Dog      | 25000.00 |
+|      2 | Kitty    | Cat      | 15000.00 |
+|      3 | Coco     | Parrot   |  5000.00 |
+|      4 | Bunny    | Rabbit   |  3000.00 |
+|      5 | Goldie   | Fish     |  1000.00 |
+|      6 | Snowy    | Hamster  |  2000.00 |
++--------+----------+----------+----------+
+6 rows in set (0.05 sec)
+
+mysql> select * from purchases;
++-------------+---------------+----------+-------------+--------+
+| purchase_id | purchase_date | quantity | customer_id | pet_id |
++-------------+---------------+----------+-------------+--------+
+|           1 | 2026-06-20    |        1 |           1 |      1 |
+|           2 | 2026-06-21    |        2 |           2 |      3 |
+|           3 | 2026-06-21    |        1 |           3 |      2 |
+|           4 | 2026-06-22    |        3 |           4 |      5 |
+|           5 | 2026-06-23    |        1 |           5 |      4 |
+|           6 | 2026-06-23    |        2 |           6 |      6 |
++-------------+---------------+----------+-------------+--------+
+6 rows in set (0.00 sec)
+
+mysql> -- EASY QUERIES
+mysql>
+mysql> -- 1. Display the names and prices of pets whose price is greater than ₹5000 using the WHERE clause.
+mysql>
+mysql> SELECT pet_name, price
+    -> FROM Pets
+    -> WHERE price > 5000;
++----------+----------+
+| pet_name | price    |
++----------+----------+
+| Tommy    | 25000.00 |
+| Kitty    | 15000.00 |
++----------+----------+
+2 rows in set (0.04 sec)
+
+mysql>
+mysql> -- 2. Display the names and email addresses of customers whose email contains 'gmail.com' using the WHERE clause.
+mysql>
+mysql> SELECT customer_name, email
+    -> FROM Customers
+    -> WHERE email LIKE '%gmail.com';
++---------------+------------------+
+| customer_name | email            |
++---------------+------------------+
+| Rahul Sharma  | rahul@gmail.com  |
+| Priya Reddy   | priya@gmail.com  |
+| Arjun Kumar   | arjun@gmail.com  |
+| Sneha Patel   | sneha@gmail.com  |
+| Vikram Singh  | vikram@gmail.com |
+| Ananya Das    | ananya@gmail.com |
++---------------+------------------+
+6 rows in set (0.04 sec)
+
+mysql>
+mysql> -- 3. Return the names and types of pets that are dogs using the WHERE clause.
+mysql>
+mysql> SELECT pet_name, pet_type
+    -> FROM Pets
+    -> WHERE pet_type = 'Dog';
++----------+----------+
+| pet_name | pet_type |
++----------+----------+
+| Tommy    | Dog      |
++----------+----------+
+1 row in set (0.03 sec)
+
+mysql>
+mysql> -- 4. Display pets whose prices are between ₹2000 and ₹20000 using the BETWEEN operator.
+mysql>
+mysql> SELECT pet_name, price
+    -> FROM Pets
+    -> WHERE price BETWEEN 2000 AND 20000;
++----------+----------+
+| pet_name | price    |
++----------+----------+
+| Kitty    | 15000.00 |
+| Coco     |  5000.00 |
+| Bunny    |  3000.00 |
+| Snowy    |  2000.00 |
++----------+----------+
+4 rows in set (0.00 sec)
+
+mysql>
+mysql> -- INTERMEDIATE QUERIES
+mysql>
+mysql> -- 1. Calculate the average price of all pets using the AVG aggregate function.
+mysql>
+mysql> SELECT AVG(price) AS Average_Price
+    -> FROM Pets;
++---------------+
+| Average_Price |
++---------------+
+|   8500.000000 |
++---------------+
+1 row in set (0.04 sec)
+
+mysql>
+mysql> -- 2. Count the total number of pets available in each pet category using COUNT and GROUP BY clauses.
+mysql>
+mysql> SELECT pet_type,
+    -> COUNT(*) AS Total_Pets
+    -> FROM Pets
+    -> GROUP BY pet_type;
++----------+------------+
+| pet_type | Total_Pets |
++----------+------------+
+| Dog      |          1 |
+| Cat      |          1 |
+| Parrot   |          1 |
+| Rabbit   |          1 |
+| Fish     |          1 |
+| Hamster  |          1 |
++----------+------------+
+6 rows in set (0.01 sec)
+
+mysql>
+mysql> -- 3. Find the highest pet price using the MAX aggregate function.
+mysql>
+mysql> SELECT MAX(price) AS Highest_Price
+    -> FROM Pets;
++---------------+
+| Highest_Price |
++---------------+
+|      25000.00 |
++---------------+
+1 row in set (0.00 sec)
+
+mysql>
+mysql> -- 4. the total number of purchases made by each customer using COUNT and GROUP BY clauses.
+mysql>
+mysql> SELECT customer_id,
+    -> COUNT(*) AS Total_Purchases
+    -> FROM Purchases
+    -> GROUP BY customer_id;
++-------------+-----------------+
+| customer_id | Total_Purchases |
++-------------+-----------------+
+|           1 |               1 |
+|           2 |               1 |
+|           3 |               1 |
+|           4 |               1 |
+|           5 |               1 |
+|           6 |               1 |
++-------------+-----------------+
+6 rows in set (0.00 sec)
+
+mysql>
+mysql> -- HARD QUERIES
+mysql>
+mysql> -- 1. Join the Customers and Purchases tables to display customer names along with their purchase dates and quantities.
+
+mysql> SELECT c.customer_name,
+    -> p.purchase_date,
+    -> p.quantity
+    -> FROM Customers c
+    -> JOIN Purchases p
+    -> ON c.customer_id = p.customer_id;
++---------------+---------------+----------+
+| customer_name | purchase_date | quantity |
++---------------+---------------+----------+
+| Rahul Sharma  | 2026-06-20    |        1 |
+| Priya Reddy   | 2026-06-21    |        2 |
+| Arjun Kumar   | 2026-06-21    |        1 |     
+| Sneha Patel   | 2026-06-22    |        3 |
+| Vikram Singh  | 2026-06-23    |        1 |
+| Ananya Das    | 2026-06-23    |        2 |
++---------------+---------------+----------+
+6 rows in set (0.00 sec)
+
+mysql>
+mysql> -- 2. Join the Pets and Purchases tables to display pet names along with their purchase quantities.
+mysql>
+mysql> SELECT pt.pet_name,
+    -> p.quantity
+    -> FROM Pets pt
+    -> JOIN Purchases p
+    -> ON pt.pet_id = p.pet_id;
++----------+----------+
+| pet_name | quantity |
++----------+----------+
+| Tommy    |        1 |
+| Kitty    |        1 |
+| Coco     |        2 |
+| Bunny    |        1 |
+| Goldie   |        3 |
+| Snowy    |        2 |
++----------+----------+
+6 rows in set (0.00 sec)
+
+mysql>
+mysql> -- 3. Join the Pets and Purchases tables and displays pets purchased in quantities greater than one using JOIN and WHERE clauses.
+mysql>
+mysql> SELECT pt.pet_name,
+    -> p.quantity
+    -> FROM Pets pt
+    -> JOIN Purchases p
+    -> ON pt.pet_id = p.pet_id
+    -> WHERE p.quantity > 1;
++----------+----------+
+| pet_name | quantity |
++----------+----------+
+| Coco     |        2 |
+| Goldie   |        3 |
+| Snowy    |        2 |
++----------+----------+
+3 rows in set (0.00 sec)
+
+mysql>
+mysql> -- 4. Join the Customers and Purchases tables and counts the total number of purchases made by each customer using JOIN, COUNT, and GROUP BY clauses.
+mysql>
+mysql> SELECT c.customer_name,
+    -> COUNT(p.purchase_id) AS Total_Purchases
+    -> FROM Customers c
+    -> JOIN Purchases p
+    -> ON c.customer_id = p.customer_id
+    -> GROUP BY c.customer_name;
++---------------+-----------------+
+| customer_name | Total_Purchases |
++---------------+-----------------+
+| Rahul Sharma  |               1 |
+| Priya Reddy   |               1 |
+| Arjun Kumar   |               1 |
+| Sneha Patel   |               1 |
+| Vikram Singh  |               1 |
+| Ananya Das    |               1 |
++---------------+-----------------+
+6 rows in set (0.00 sec)
+
+mysql> -- :::::::::::::::::::::::::::::::::::::::::::::DESCRIPTION OF QUERIES::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+mysql> 
+mysql> -- EASY QUERY 1:
+mysql> -- This query displays the names and prices of pets whose price is greater than ₹5000 using the WHERE clause.
+
+mysql> 
+mysql> -- EASY QUERY 2:
+mysql> -- This query displays the names and email addresses of customers whose email contains 'gmail.com' using the WHERE clause.
+
+mysql> 
+mysql> -- EASY QUERY 3:
+mysql> -- This query displays pets whose prices are between ₹2000 and ₹20000 using the BETWEEN operator.
+
+mysql> 
+mysql> -- EASY QUERY 4:
+mysql> --  This query returns the names and types of pets that are dogs using the WHERE clause.
+
+mysql> 
+mysql> -- INTERMEDIATE QUERY 1:
+mysql> -- This query calculates the average price of all pets using the AVG aggregate function.
+
+mysql> 
+mysql> -- INTERMEDIATE QUERY 2:
+mysql> -- This query counts the total number of pets available in each pet category using COUNT and GROUP BY clauses
+
+mysql> 
+mysql> -- INTERMEDIATE QUERY 3:
+mysql> -- This query finds the highest pet price using the MAX aggregate function.
+mysql> 
+mysql> -- INTERMEDIATE QUERY 4:
+mysql> -- This query displays the total number of purchases made by each customer using COUNT and GROUP BY clauses.
+
+mysql> 
+mysql> -- HARD QUERY 1:
+mysql> -- This query joins the Customers and Purchases tables to display customer names along with their purchase dates and quantities.
+
+mysql> 
+mysql> -- HARD QUERY 2:
+mysql> -- This query joins the Pets and Purchases tables to display pet names along with their purchase quantities.
+
+mysql> 
+mysql> -- HARD QUERY 3:
+mysql> -- This query joins the Pets and Purchases tables and displays pets purchased in quantities greater than one using JOIN and WHERE clauses.
+
+mysql> 
+mysql> -- HARD QUERY 4:
+mysql> -- This query joins the Customers and Purchases tables and counts the total number of purchases made by each customer using JOIN, COUNT, and GROUP BY clauses.
+
+mysql> 
+mysql> 
+mysql> EXIT
