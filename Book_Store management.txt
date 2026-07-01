@@ -1,6 +1,3 @@
-Query OK, 1 row affected, 1 warning (0.02 sec)
-
-mysql>
 mysql> USE bookstore_db;
 Database changed
 mysql>
@@ -10,14 +7,12 @@ mysql> CREATE TABLE Authors (
     ->     author_name VARCHAR(100) NOT NULL,
     ->     bio TEXT
     -> );
-ERROR 1050 (42S01): Table 'authors' already exists
 mysql>
 mysql> -- 2. Genres
 mysql> CREATE TABLE Genres (
     ->     genre_id INT AUTO_INCREMENT PRIMARY KEY,
     ->     genre_name VARCHAR(50) NOT NULL
     -> );
-ERROR 1050 (42S01): Table 'genres' already exists
 mysql>
 mysql> -- 3. Customers
 mysql> CREATE TABLE Customers (
@@ -27,7 +22,6 @@ mysql> CREATE TABLE Customers (
     ->     city VARCHAR(50),
     ->     join_date DATE
     -> );
-ERROR 1050 (42S01): Table 'customers' already exists
 mysql>
 mysql> -- 4. Books
 mysql> CREATE TABLE Books (
@@ -41,7 +35,6 @@ mysql> CREATE TABLE Books (
     ->     FOREIGN KEY (author_id) REFERENCES Authors(author_id),
     ->     FOREIGN KEY (genre_id) REFERENCES Genres(genre_id)
     -> );
-ERROR 1050 (42S01): Table 'books' already exists
 mysql>
 mysql> -- 5. Orders
 mysql> CREATE TABLE Orders (
@@ -51,7 +44,6 @@ mysql> CREATE TABLE Orders (
     ->
     ->     FOREIGN KEY (customer_id) REFERENCES Customers(customer_id)
     -> );
-ERROR 1050 (42S01): Table 'orders' already exists
 mysql>
 mysql> -- 6. Order_Details
 mysql> CREATE TABLE Order_Details (
@@ -64,7 +56,6 @@ mysql> CREATE TABLE Order_Details (
     ->     FOREIGN KEY (order_id) REFERENCES Orders(order_id),
     ->     FOREIGN KEY (book_id) REFERENCES Books(book_id)
     -> );
-ERROR 1050 (42S01): Table 'order_details' already exists
 mysql>
 mysql> -- Insert Authors
 mysql> INSERT INTO Authors (author_name, bio) VALUES
@@ -107,7 +98,6 @@ mysql> INSERT INTO Customers
     -> ('Diya Patel', 'diya.p@yahoo.com', 'Ahmedabad', '2023-02-15'),
     -> ('Vihaan Reddy', 'vihaan.r@outlook.com', 'Hyderabad', '2023-03-20'),
     -> ('Ananya Gupta', 'ananya.g@gmail.com', 'Delhi', '2023-04-05');
-ERROR 1062 (23000): Duplicate entry 'aarav@gmail.com' for key 'customers.email'
 mysql>
 mysql> -- Insert Orders
 mysql> INSERT INTO Orders
